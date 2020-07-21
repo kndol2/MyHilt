@@ -2,10 +2,10 @@ package com.mh.st.myhilt
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.mh.st.myhilt.repository.Repository
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,15 +22,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        lifecycleScope.launch {
-            val response = repository.fetchPlaces("restaurant",
-                location = "37.5698411, 126.9783927",
-                name = "한식",
-                opennow = true,
-                rankby = "distance",
-                key = "GOOGLE_PLACE_API_KEY")
+        repository.fetchImages("restaurant")
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe ({
+                Timber.d("response: $it")
+            },{
 
-            Timber.d("response: $response")
-        }
+            })
     }
 }

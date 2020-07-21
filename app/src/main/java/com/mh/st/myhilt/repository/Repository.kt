@@ -1,7 +1,8 @@
 package com.mh.st.myhilt.repository
 
-import com.mh.st.myhilt.repository.model.PlacesModel
+import com.mh.st.myhilt.repository.model.KakaoImageResponse
+import io.reactivex.Single
 
 interface Repository {
-    fun fetchPlaces(type: String, location: String, name: String, opennow: Boolean, rankby: String, key: String): PlacesModel
+    fun fetchImages(query: String, page: Int = 1, size: Int = 10): Single<KakaoImageResponse>
 }
