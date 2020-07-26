@@ -1,8 +1,8 @@
-package com.mh.st.myhilt.repository.datasource.network
+package com.mh.st.myhilt.repository.datasource.remote
 
 import com.mh.st.myhilt.BuildConfig
 import com.mh.st.myhilt.repository.Repository
-import com.mh.st.myhilt.repository.datasource.network.ApiRepository.Companion.SERVER_HOST
+import com.mh.st.myhilt.repository.datasource.remote.ApiRepository.Companion.SERVER_HOST
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,7 +10,6 @@ import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -56,7 +55,7 @@ object ApiModule {
     fun provideApiService(okHttpClient: OkHttpClient): ApiService {
         return Retrofit.Builder()
             .baseUrl(SERVER_HOST)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

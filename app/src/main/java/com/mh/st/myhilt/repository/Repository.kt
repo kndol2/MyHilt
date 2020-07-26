@@ -1,8 +1,9 @@
 package com.mh.st.myhilt.repository
 
-import com.mh.st.myhilt.repository.model.KakaoImageResponse
-import io.reactivex.Single
+import androidx.paging.PagingData
+import com.mh.st.myhilt.repository.model.Documents
+import kotlinx.coroutines.flow.Flow
 
 interface Repository {
-    fun fetchImages(query: String, page: Int = 1, size: Int = 10): Single<KakaoImageResponse>
+    fun fetchImages(query: String, page: Int = 1, size: Int = 10): Flow<PagingData<Documents>>
 }

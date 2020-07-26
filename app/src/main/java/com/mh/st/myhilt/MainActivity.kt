@@ -3,12 +3,14 @@ package com.mh.st.myhilt
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.jakewharton.rxbinding3.widget.textChanges
+import com.mh.st.myhilt.adapter.ImageAdapter
 import com.mh.st.myhilt.databinding.ActivityMainBinding
-import com.mh.st.myhilt.repository.model.Documents
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 /**
@@ -21,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
 
-    private val adapter = ImageAdapter(this)
+    private val adapter = ImageAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,17 +31,24 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.recyclerIamge.adapter = adapter
+
         binding.etSearch.textChanges()
             .debounce(500, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .subscribe {
-                viewModel.fetchImages(it.toString())
+                fetchImage(it.toString())
+//                viewModel.fetchImages(it.toString())
             }
+    }
 
-        binding.recyclerIamge.adapter = adapter
-
-        viewModel.ducumentLisveData.observe(this, Observer<List<Documents>> {
-            adapter.setData(it)
-        })
+    fun fetchImage(search: String) {
+        lifecycleScope.launch {
+            viewModel.fetchImages(search).collect {
+                it.let {
+                    adapter.submitData(it)
+                }
+            }
+        }
     }
 }
