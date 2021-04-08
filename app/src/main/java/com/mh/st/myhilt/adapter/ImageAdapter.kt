@@ -3,9 +3,9 @@ package com.mh.st.myhilt.adapter
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.mh.st.myhilt.repository.model.Documents
+import com.mh.st.myhilt.repository.datasource.local.SearchEntity
 
-class ImageAdapter: PagingDataAdapter<Documents, ImageHolder>(DiffUtilCallBack()) {
+class ImageAdapter: PagingDataAdapter<SearchEntity, ImageHolder>(DiffUtilCallBack()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         return ImageHolder(parent)
     }
@@ -17,10 +17,10 @@ class ImageAdapter: PagingDataAdapter<Documents, ImageHolder>(DiffUtilCallBack()
     }
 }
 
-class DiffUtilCallBack : DiffUtil.ItemCallback<Documents>() {
-    override fun areItemsTheSame(oldItem: Documents, newItem: Documents): Boolean =
+class DiffUtilCallBack : DiffUtil.ItemCallback<SearchEntity>() {
+    override fun areItemsTheSame(oldItem: SearchEntity, newItem: SearchEntity): Boolean =
         oldItem.thumbnail_url == newItem.thumbnail_url
 
-    override fun areContentsTheSame(oldItem: Documents, newItem: Documents): Boolean =
+    override fun areContentsTheSame(oldItem: SearchEntity, newItem: SearchEntity): Boolean =
         oldItem == newItem
 }

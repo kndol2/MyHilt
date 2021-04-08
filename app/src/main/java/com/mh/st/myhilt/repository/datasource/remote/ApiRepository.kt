@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 class ApiRepository(private val apiService: ApiService) : Repository {
     companion object {
         const val SERVER_HOST = "https://dapi.kakao.com"
-        const val KAKAO_APP_KEY = ""
+        const val KAKAO_APP_KEY = "fa117e89dedaf13ac6edb951baee9cc4"
 
         private const val NETWORK_PAGE_SIZE = 10
     }

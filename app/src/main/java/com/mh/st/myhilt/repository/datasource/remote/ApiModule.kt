@@ -1,12 +1,17 @@
 package com.mh.st.myhilt.repository.datasource.remote
 
+import android.content.Context
 import com.mh.st.myhilt.BuildConfig
 import com.mh.st.myhilt.repository.Repository
+import com.mh.st.myhilt.repository.datasource.local.AppDatabase
+import com.mh.st.myhilt.repository.datasource.local.DbLocalRepository
+import com.mh.st.myhilt.repository.datasource.local.LocalRepository
 import com.mh.st.myhilt.repository.datasource.remote.ApiRepository.Companion.SERVER_HOST
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -65,4 +70,14 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideRepository(apiService: ApiService): Repository = ApiRepository(apiService)
+
+    @Singleton
+    @Provides
+    fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase {
+        return AppDatabase.getInstance(appContext)
+    }
+
+    @Singleton
+    @Provides
+    fun provideLocalRepository(db: AppDatabase, apiService: ApiService): LocalRepository = DbLocalRepository(db, apiService)
 }
